@@ -36,11 +36,13 @@ namespace Installers
             Container.Bind<PlayerCamera>()
                 .FromNewComponentOnNewGameObject()
                 .AsSingle().NonLazy();
-            
+
             Container.BindInterfacesAndSelfTo<PlayerFacade>()
                 .FromComponentInNewPrefab(_settings.playerPrefab)
                 .UnderTransform(charactersContainer)
                 .AsSingle().NonLazy();
+
+            Container.BindInterfacesAndSelfTo<MovementInput>().AsSingle().NonLazy();
         }
 
         private void InstallManagers()
