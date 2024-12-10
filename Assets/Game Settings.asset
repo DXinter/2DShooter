@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Game Settings
   m_EditorClassIdentifier: 
   gameSettings:
-    playerPrefab: {fileID: 0}
+    playerPrefab: {fileID: 8452478612997851182, guid: 09d101f6130ee2c46bc903ebc2004e00, type: 3}
