@@ -9,8 +9,11 @@ namespace Game.Player
         [SerializeField] private GameObject characterAvatar;
         [SerializeField] private Rigidbody rb;
         [SerializeField] private float playerSpeed;
-
+        [SerializeField] private Transform gunPosition;
+        
         private MovementInput _movementInput;
+
+        public Transform GunPosition => gunPosition;
 
 
         [Inject]

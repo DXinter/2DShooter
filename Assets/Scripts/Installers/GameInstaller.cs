@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cinemachine;
+using Game;
+using Game.Bullet;
 using Game.Player;
 using UnityEngine;
 using Zenject;
@@ -62,6 +64,7 @@ namespace Installers
         {
             var services = new List<Type>
             {
+                typeof(ShootController),
             };
 
             foreach (var service in services)
@@ -77,12 +80,16 @@ namespace Installers
 
         private void InstallPools()
         {
+            Container.BindMemoryPool<Bullet, Bullet.Pool>().WithInitialSize(25)
+                .FromComponentInNewPrefab(_settings.bulletPrefab).UnderTransform(objectsPool);
         }
 
         [Serializable]
         public class Settings
         {
-            [Header("Prefabs")] public GameObject playerPrefab;
+            [Header("Prefabs")] 
+            public GameObject playerPrefab;
+            public GameObject bulletPrefab;
         }
     }
 }

@@ -50,6 +50,34 @@
                     "isPartOfComposite": true
                 }
             ]
+        },
+        {
+            "name": "Fire",
+            "id": "5f1a91ad-d93f-40ea-87d1-70f3a2a87ac7",
+            "actions": [
+                {
+                    "name": "Fire",
+                    "type": "Button",
+                    "id": "8eac49d5-fe19-4a6c-9010-fba130058e2e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "608598fd-8457-4ff7-b4af-c2a5ddcbaf38",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Fire",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

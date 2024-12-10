@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Game;
+using UnityEngine;
 using Zenject;
 
 namespace Installers
@@ -7,10 +8,12 @@ namespace Installers
     public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInstaller>
     {
         public GameInstaller.Settings gameSettings;
+        public ShootController.Settings shootSettings;
 
         public override void InstallBindings()
         {
             Container.BindInstance(gameSettings).IfNotBound();
+            Container.BindInstance(shootSettings).IfNotBound();
         }
     }
 }

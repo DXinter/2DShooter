@@ -74,6 +74,34 @@ namespace PlayerInput
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Fire"",
+            ""id"": ""5f1a91ad-d93f-40ea-87d1-70f3a2a87ac7"",
+            ""actions"": [
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""8eac49d5-fe19-4a6c-9010-fba130058e2e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""608598fd-8457-4ff7-b4af-c2a5ddcbaf38"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": []
@@ -81,11 +109,15 @@ namespace PlayerInput
             // Player
             m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
             m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+            // Fire
+            m_Fire = asset.FindActionMap("Fire", throwIfNotFound: true);
+            m_Fire_Fire = m_Fire.FindAction("Fire", throwIfNotFound: true);
         }
 
         ~@InputActions()
         {
             UnityEngine.Debug.Assert(!m_Player.enabled, "This will cause a leak and performance issues, InputActions.Player.Disable() has not been called.");
+            UnityEngine.Debug.Assert(!m_Fire.enabled, "This will cause a leak and performance issues, InputActions.Fire.Disable() has not been called.");
         }
 
         public void Dispose()
@@ -189,9 +221,59 @@ namespace PlayerInput
             }
         }
         public PlayerActions @Player => new PlayerActions(this);
+
+        // Fire
+        private readonly InputActionMap m_Fire;
+        private List<IFireActions> m_FireActionsCallbackInterfaces = new List<IFireActions>();
+        private readonly InputAction m_Fire_Fire;
+        public struct FireActions
+        {
+            private @InputActions m_Wrapper;
+            public FireActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+            public InputAction @Fire => m_Wrapper.m_Fire_Fire;
+            public InputActionMap Get() { return m_Wrapper.m_Fire; }
+            public void Enable() { Get().Enable(); }
+            public void Disable() { Get().Disable(); }
+            public bool enabled => Get().enabled;
+            public static implicit operator InputActionMap(FireActions set) { return set.Get(); }
+            public void AddCallbacks(IFireActions instance)
+            {
+                if (instance == null || m_Wrapper.m_FireActionsCallbackInterfaces.Contains(instance)) return;
+                m_Wrapper.m_FireActionsCallbackInterfaces.Add(instance);
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
+            }
+
+            private void UnregisterCallbacks(IFireActions instance)
+            {
+                @Fire.started -= instance.OnFire;
+                @Fire.performed -= instance.OnFire;
+                @Fire.canceled -= instance.OnFire;
+            }
+
+            public void RemoveCallbacks(IFireActions instance)
+            {
+                if (m_Wrapper.m_FireActionsCallbackInterfaces.Remove(instance))
+                    UnregisterCallbacks(instance);
+            }
+
+            public void SetCallbacks(IFireActions instance)
+            {
+                foreach (var item in m_Wrapper.m_FireActionsCallbackInterfaces)
+                    UnregisterCallbacks(item);
+                m_Wrapper.m_FireActionsCallbackInterfaces.Clear();
+                AddCallbacks(instance);
+            }
+        }
+        public FireActions @Fire => new FireActions(this);
         public interface IPlayerActions
         {
             void OnMove(InputAction.CallbackContext context);
+        }
+        public interface IFireActions
+        {
+            void OnFire(InputAction.CallbackContext context);
         }
     }
 }
