@@ -14,3 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSettings:
     playerPrefab: {fileID: 8452478612997851182, guid: 09d101f6130ee2c46bc903ebc2004e00, type: 3}
+    bulletPrefab: {fileID: 269866061096375711, guid: b0d80ce38310803478ac85edea07b03d, type: 3}
+    enemyPrefab: {fileID: 7228229832848464450, guid: cba44f36bc7b3dc44a837804e3898488, type: 3}
+  shootSettings:
+    fireRate: 0.4
+  spawnSettings:
+    enemies:
+    - {fileID: 11400000, guid: 72df1ab33f41c0c48af8c69028b1483a, type: 2}
+    - {fileID: 11400000, guid: 1b42eff6c4e1b3345a4a0c9392dd3cb5, type: 2}
+    - {fileID: 11400000, guid: 72f58df1619baaf4f85967b4f944cc2f, type: 2}
+    - {fileID: 11400000, guid: 8ae0ce80b7ded9445960426524d5b980, type: 2}
+    - {fileID: 11400000, guid: f71a0a2ab0974ee42b584f84942b0d0f, type: 2}
+    minSpawnInterval: 1
+    maxSpawnInterval: 10

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Cinemachine;
 using Game;
 using Game.Bullet;
+using Game.Enemy;
 using Game.Player;
 using UnityEngine;
 using Zenject;
@@ -13,6 +14,7 @@ namespace Installers
     {
         [SerializeField] private Transform objectsPool;
         [SerializeField] private Transform charactersContainer;
+        [SerializeField] private List<Transform> enemySpawnPoints;
         [SerializeField] private Camera mainCamera;
         [SerializeField] private CinemachineVirtualCamera virtualCamera;
 
@@ -21,6 +23,7 @@ namespace Installers
         public override void InstallBindings()
         {
             InstallPlayer();
+            InstallEnemySpawner();
             InstallManagers();
             InstallServices();
             InstallFactories();
@@ -45,6 +48,13 @@ namespace Installers
                 .AsSingle().NonLazy();
 
             Container.BindInterfacesAndSelfTo<MovementInput>().AsSingle().NonLazy();
+        }
+
+        private void InstallEnemySpawner()
+        {
+            Container.Bind<EnemySpawner>().FromNewComponentOnNewGameObject().AsSingle()
+                .WithArguments(enemySpawnPoints)
+                .NonLazy();
         }
 
         private void InstallManagers()
@@ -82,6 +92,9 @@ namespace Installers
         {
             Container.BindMemoryPool<Bullet, Bullet.Pool>().WithInitialSize(25)
                 .FromComponentInNewPrefab(_settings.bulletPrefab).UnderTransform(objectsPool);
+            
+            Container.BindMemoryPool<Enemy, Enemy.Pool>().WithInitialSize(10)
+                .FromComponentInNewPrefab(_settings.enemyPrefab).UnderTransform(objectsPool);
         }
 
         [Serializable]
@@ -90,6 +103,7 @@ namespace Installers
             [Header("Prefabs")] 
             public GameObject playerPrefab;
             public GameObject bulletPrefab;
+            public GameObject enemyPrefab;
         }
     }
 }

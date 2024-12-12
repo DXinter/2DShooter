@@ -1,4 +1,5 @@
 ﻿using Game;
+using Game.Enemy;
 using UnityEngine;
 using Zenject;
 
@@ -9,11 +10,13 @@ namespace Installers
     {
         public GameInstaller.Settings gameSettings;
         public ShootController.Settings shootSettings;
+        public EnemySpawner.Settings spawnSettings;
 
         public override void InstallBindings()
         {
             Container.BindInstance(gameSettings).IfNotBound();
             Container.BindInstance(shootSettings).IfNotBound();
+            Container.BindInstance(spawnSettings).IfNotBound();
         }
     }
 }
