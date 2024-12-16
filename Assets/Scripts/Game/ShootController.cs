@@ -9,7 +9,7 @@ namespace Game
 {
     public class ShootController : InputActions.IFireActions, IInitializable, ILateDisposable, ITickable
     {
-        private InputActions _inputActions = new();
+        private readonly InputActions _inputActions = new();
         private PlayerFacade _playerFacade;
         private Bullet.Bullet.Pool _pool;
         private Settings _settings;
