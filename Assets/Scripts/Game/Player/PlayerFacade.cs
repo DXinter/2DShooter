@@ -10,12 +10,10 @@ namespace Game.Player
         [SerializeField] private Rigidbody rb;
         [SerializeField] private float playerSpeed;
         [SerializeField] private Transform gunPosition;
-        
         private MovementInput _movementInput;
-
+        
         public Transform GunPosition => gunPosition;
-
-
+        
         [Inject]
         public void Construct(MovementInput movementInput)
         {

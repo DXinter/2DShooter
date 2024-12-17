@@ -8,19 +8,14 @@ namespace Game.Enemy
     public class Enemy : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer avatar;
-
-        private Pool _pool;
+        private Transform _enemyDeadPosition;
         public float Speed { get; private set; }
         public int Health { get; private set; }
+        public Transform EnemyDeadPosition => _enemyDeadPosition;
         public event Action OnEnemyHit;
+        public event Action<Enemy> OnEnemyDead;
         public event Action OnEnemyInitialized;
-
-        [Inject]
-        public void Construct(Pool pool)
-        {
-            _pool = pool;
-        }
-
+        
         public void Init(EnemyData data)
         {
             avatar.sprite = data.sprite;
@@ -42,7 +37,8 @@ namespace Game.Enemy
                 return;
             }
 
-            _pool.Despawn(this);
+            _enemyDeadPosition = transform;
+            OnEnemyDead?.Invoke(this);
         }
 
         public class Pool : MonoMemoryPool<Enemy>

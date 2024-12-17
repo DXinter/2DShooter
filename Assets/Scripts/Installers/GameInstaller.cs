@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Cinemachine;
 using Game;
+using Game.Ammo;
 using Game.Bullet;
 using Game.Enemy;
 using Game.Player;
@@ -61,6 +62,7 @@ namespace Installers
         {
             var managers = new List<Type>
             {
+                typeof(AmmoSpawner),
             };
 
             foreach (var manager in managers)
@@ -75,6 +77,9 @@ namespace Installers
             var services = new List<Type>
             {
                 typeof(ShootController),
+                typeof(EnemyRegistry),
+                typeof(EnemyDeathHandler),
+                typeof(AmmoCounter),
             };
 
             foreach (var service in services)
@@ -95,6 +100,9 @@ namespace Installers
             
             Container.BindMemoryPool<Enemy, Enemy.Pool>().WithInitialSize(10)
                 .FromComponentInNewPrefab(_settings.enemyPrefab).UnderTransform(objectsPool);
+            
+            Container.BindMemoryPool<Ammo, Ammo.Pool>().WithInitialSize(5)
+                .FromComponentInNewPrefab(_settings.ammoPrefab).UnderTransform(objectsPool);
         }
 
         [Serializable]
@@ -104,6 +112,7 @@ namespace Installers
             public GameObject playerPrefab;
             public GameObject bulletPrefab;
             public GameObject enemyPrefab;
+            public GameObject ammoPrefab;
         }
     }
 }

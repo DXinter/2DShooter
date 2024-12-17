@@ -1,4 +1,5 @@
 ﻿using System;
+using Game.Ammo;
 using Game.Player;
 using PlayerInput;
 using UnityEngine;
@@ -13,16 +14,19 @@ namespace Game
         private PlayerFacade _playerFacade;
         private Bullet.Bullet.Pool _pool;
         private Settings _settings;
+        private AmmoCounter _ammoCounter;
 
         private float _lastFireTime;
         private bool _isShooting;
 
         [Inject]
-        public void Construct(Bullet.Bullet.Pool pool, PlayerFacade playerFacade, Settings settings)
+        public void Construct(Bullet.Bullet.Pool pool, PlayerFacade playerFacade, Settings settings,
+            AmmoCounter ammoCounter)
         {
             _pool = pool;
             _playerFacade = playerFacade;
             _settings = settings;
+            _ammoCounter = ammoCounter;
         }
 
         public void Initialize()
@@ -65,7 +69,9 @@ namespace Game
 
             var bullet = _pool.Spawn();
             bullet.transform.position = _playerFacade.GunPosition.position;
-            
+
+            _ammoCounter.SubAmmo();
+
             var direction = _playerFacade.transform.localScale.x > 0 ? 1 : -1;
             bullet.Rb.velocity = new Vector2(direction * bullet.Speed, 0);
 

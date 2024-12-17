@@ -13,15 +13,19 @@ namespace Game.Enemy
     {
         private List<Transform> _spawnPoints;
         private PlayerFacade _playerFacade;
+        private EnemyRegistry _enemyRegistry;
         private Enemy.Pool _pool;
+        private EnemyDeathHandler _enemyDeathHandler;
         private Settings _settings;
 
         [Inject]
-        public void Construct(PlayerFacade playerFacade, List<Transform> spawnPoints,
-            Enemy.Pool pool, Settings settings)
+        public void Construct(PlayerFacade playerFacade, List<Transform> spawnPoints, EnemyRegistry enemyRegistry,
+            Enemy.Pool pool, EnemyDeathHandler enemyDeathHandler, Settings settings)
         {
             _playerFacade = playerFacade;
             _spawnPoints = spawnPoints;
+            _enemyRegistry = enemyRegistry;
+            _enemyDeathHandler = enemyDeathHandler;
             _pool = pool;
             _settings = settings;
         }
@@ -48,11 +52,23 @@ namespace Game.Enemy
                     < 0 => new Vector3(-1, 1, 1),
                     _ => transform.localScale
                 };
-                
+
                 enemy.Init(_settings.enemies[enemyIndex]);
+                
+                _enemyRegistry.AddEnemy(enemy);
+                enemy.OnEnemyDead += OnEnemyDeath;
                 
                 yield return new WaitForSeconds(Random.Range(_settings.minSpawnInterval, _settings.maxSpawnInterval));
             }
+        }
+
+        private void OnEnemyDeath(Enemy target)
+        {
+            _enemyRegistry.RemoveEnemy(target);
+            
+            _enemyDeathHandler.Despawn(target);
+            
+            target.OnEnemyDead -= OnEnemyDeath;
         }
 
         [Serializable]

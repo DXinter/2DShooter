@@ -16,6 +16,7 @@ MonoBehaviour:
     playerPrefab: {fileID: 8452478612997851182, guid: 09d101f6130ee2c46bc903ebc2004e00, type: 3}
     bulletPrefab: {fileID: 269866061096375711, guid: b0d80ce38310803478ac85edea07b03d, type: 3}
     enemyPrefab: {fileID: 7228229832848464450, guid: cba44f36bc7b3dc44a837804e3898488, type: 3}
+    ammoPrefab: {fileID: 4741260662820619025, guid: 87be93ad5ec20b64c9d7a8c5f15f4ace, type: 3}
   shootSettings:
     fireRate: 0.4
   spawnSettings:
@@ -27,3 +28,8 @@ MonoBehaviour:
     - {fileID: 11400000, guid: f71a0a2ab0974ee42b584f84942b0d0f, type: 2}
     minSpawnInterval: 1
     maxSpawnInterval: 10
+  ammoCounterSettings:
+    baseAmmoCount: 20
+  ammoSpawnerSettings:
+    minAmmoCount: 5
+    maxAmmoCount: 15
