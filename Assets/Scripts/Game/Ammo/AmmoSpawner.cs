@@ -9,12 +9,14 @@ namespace Game.Ammo
     {
         private Settings _settings;
         private Ammo.Pool _pool;
+        private AmmoCollectedHandler _ammoCollectedHandler;
 
         [Inject]
-        public void Construct(Settings settings, Ammo.Pool pool)
+        public void Construct(Settings settings, Ammo.Pool pool, AmmoCollectedHandler ammoCollectedHandler)
         {
             _settings = settings;
             _pool = pool;
+            _ammoCollectedHandler = ammoCollectedHandler;
         }
 
         public void SpawnAmmo(Vector3 position)
@@ -22,6 +24,13 @@ namespace Game.Ammo
             var ammo = _pool.Spawn();
             ammo.transform.position = position;
             ammo.SetAmmo(Random.Range(_settings.minAmmoCount, _settings.maxAmmoCount));
+            ammo.OnAmmoCollect += OnAmmoCollected;
+        }
+
+        private void OnAmmoCollected(Ammo ammo)
+        {
+            ammo.OnAmmoCollect -= OnAmmoCollected;
+            _ammoCollectedHandler.Collect(ammo);
         }
 
         [Serializable]

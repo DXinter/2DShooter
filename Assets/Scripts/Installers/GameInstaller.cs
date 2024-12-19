@@ -79,6 +79,7 @@ namespace Installers
                 typeof(ShootController),
                 typeof(EnemyRegistry),
                 typeof(EnemyDeathHandler),
+                typeof(AmmoCollectedHandler),
                 typeof(AmmoCounter),
             };
 

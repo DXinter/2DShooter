@@ -73,6 +73,14 @@ namespace Game
             _ammoCounter.SubAmmo();
 
             var direction = _playerFacade.transform.localScale.x > 0 ? 1 : -1;
+
+            bullet.transform.localScale = direction switch
+            {
+                > 0 => new Vector3(-1, 1, 1),
+                < 0 => new Vector3(1, 1, 1),
+                _ => bullet.transform.localScale
+            };
+
             bullet.Rb.velocity = new Vector2(direction * bullet.Speed, 0);
 
             _lastFireTime = Time.time;
